@@ -17,7 +17,7 @@ def make_bold(w):
 
 def add_player(dirname, fn):
     ''' Add Player code '''
-    return '[audioplayer file="http://grqaser.org/Books/qrist/nor/%s/%s" rightbg="27CDA5" transparentpagebg="yes"]' % (dirname, fn)
+    return '[audioplayer file="http://url/to/dir/%s/%s" rightbg="27CDA5" transparentpagebg="yes"]' % (dirname, fn)
 
 
 def modify(fn):
