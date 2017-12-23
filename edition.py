@@ -5,6 +5,7 @@ import os
 import sys
 import re
 from natsort import natsorted, ns
+import clipboard
 
 from aliterator import get_armlet
 
@@ -14,9 +15,9 @@ def make_bold(w):
     return '<strong>' + w + '</strong>'
 
 
-def add_player(dirname):
+def add_player(dirname, fn):
     ''' Add Player code '''
-    return '[audioplayer file="http://url/qwe.mp3" rightbg="27CDA5" transparentpagebg="yes"]' % dirname
+    return '[audioplayer file="http://grqaser.org/Books/qrist/nor/%s/%s" rightbg="27CDA5" transparentpagebg="yes"]' % (dirname, fn)
 
 
 def modify(fn):
@@ -47,23 +48,41 @@ def modify(fn):
     return alit_word
 
 
+def numbered_files(fn):
+    return 'Մաս ' + fn[:-4]
+
+
+def cp_to_Clipboard():
+    with open('up.txt', 'r') as f:
+        clipboard.copy(f.read())
+        print('\n\033[1;94mCopied to clipboard!\033[0m')
+
+
 def main(argv):
     ''' Looping through filenames and printing '''
     dirname = argv[1]
     dirname = dirname[2:-1]
-    with open("up.txt",'w') as f:
+    with open('up.txt', 'w') as f:
         for fn in natsorted(os.listdir(dirname), alg=ns.PATH):
-            lit_fn = modify(fn)
+            if len(fn[:-4]) < 3:
+                lit_fn = numbered_files(fn)
+                print(lit_fn)
+            else:
+                lit_fn = modify(fn)
             print(make_bold(lit_fn))
             f.write(make_bold(lit_fn))
             print()
             f.write('\r\n')
             f.write('\r\n')
-            print(add_player(dirname))
-            f.write(add_player(dirname))
+            print(add_player(dirname, fn))
+            f.write(add_player(dirname, fn))
             f.write('\r\n')
             f.write('\r\n')
             print()
+
+    cp_to_Clipboard()
+
+    return 0
 
 
 if __name__ == '__main__':
